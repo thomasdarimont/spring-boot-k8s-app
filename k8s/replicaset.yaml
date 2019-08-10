@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: spring-boot-k8s-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-boot-k8s-app
+  template:
+    metadata:
+      name: spring-boot-k8s-app
+      labels:
+        app: spring-boot-k8s-app
+    spec:
+      containers:
+        - name: spring-boot-k8s-app
+          image: thomasdarimont/demos/spring-boot-k8s-app:latest
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: "256Mi"
+#              cpu: "500m"
+            limits:
+              memory: "256Mi"
+#              cpu: "500m"
+          ports:
+            - name: http
+              containerPort: 8080
+# https://www.baeldung.com/spring-boot-kubernetes-self-healing-apps
+          readinessProbe:
+              tcpSocket:
+                  port: 8080
+              initialDelaySeconds: 5
+              periodSeconds: 10
+              timeoutSeconds: 2
+              failureThreshold: 1
+              successThreshold: 1
+          livenessProbe:
+              tcpSocket:
+                  port: 8080
+              initialDelaySeconds: 15
+              periodSeconds: 20
+              timeoutSeconds: 2
+              failureThreshold: 1
+              successThreshold: 1

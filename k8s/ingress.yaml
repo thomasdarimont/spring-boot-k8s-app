@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: spring-boot-k8s-app-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: k8s.tdlabs.local
+      http:
+        paths:
+          - path: /app
+            backend:
+              serviceName: spring-boot-k8s-app-svc
+              servicePort: 80
