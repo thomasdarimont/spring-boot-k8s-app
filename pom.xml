@@ -84,6 +84,37 @@
 
 
             <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeScope>runtime</includeScope>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>demo.Application</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>${docker-maven-plugin.version}</version>
@@ -100,10 +131,22 @@
                                 <dockerFileDir>${project.basedir}/src/main/docker</dockerFileDir>
                                 <assembly>
                                     <inline>
+
+                                        <fileSets>
+                                            <fileSet>
+                                                <directory>
+                                                    ${project.build.directory}/lib
+                                                </directory>
+                                                <outputDirectory>
+                                                    lib
+                                                </outputDirectory>
+                                            </fileSet>
+                                        </fileSets>
+
                                         <files>
                                             <file>
                                                 <source>
-                                                    ${project.build.directory}/${project.build.finalName}.${project.packaging}
+                                                    ${project.build.directory}/${project.build.finalName}.${project.packaging}.original
                                                 </source>
                                             </file>
                                         </files>

@@ -15,15 +15,21 @@ RUN   cd /opt/java && \
 FROM debian:buster-20190708-slim
 COPY --from=builder /opt/java/java-runtime /opt/java
 
+ENV _JAVA_OPTIONS "-Djava.security.egd=file:/dev/./urandom"
 ENV PATH=$PATH:/opt/java/bin
 
 EXPOSE 8080
 CMD ["java", "-jar", "/opt/app/app.jar"]
 
-RUN mkdir -p /opt/app \
+RUN true \
+    && mkdir -p /opt/app \
     && chown -R daemon /opt/app
 
 USER daemon
 WORKDIR /opt/app
 
-COPY --chown=daemon:daemon maven/*.jar /opt/app/app.jar
+# Dependency Layer
+COPY --chown=daemon:daemon maven/lib /opt/app/lib
+
+# Application Code Layer
+COPY --chown=daemon:daemon maven/*.jar.original /opt/app/app.jar
