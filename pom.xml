@@ -134,12 +134,8 @@
 
                                         <fileSets>
                                             <fileSet>
-                                                <directory>
-                                                    ${project.build.directory}/lib
-                                                </directory>
-                                                <outputDirectory>
-                                                    lib
-                                                </outputDirectory>
+                                                <directory>${project.build.directory}/lib</directory>
+                                                <outputDirectory>lib</outputDirectory>
                                             </fileSet>
                                         </fileSets>
 

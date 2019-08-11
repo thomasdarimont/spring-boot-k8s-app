@@ -1,12 +1,12 @@
 spring:
-    main:
-        banner-mode: 'off'
+  main:
+    banner-mode: 'off'
 management:
-    endpoints:
-        web:
-            exposure:
-                include: info, health, metrics, prometheus
-    metrics:
-        export:
-            jmx:
-                enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: info, health, metrics, prometheus
+  metrics:
+    export:
+      jmx:
+        enabled: false
